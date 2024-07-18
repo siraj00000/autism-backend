@@ -1,47 +1,55 @@
-const mongooose = require("mongoose");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../data/data");
-const UserModel = mongooose.model("Users");
+const UserModel = require("../models/userSchema");
 
 module.exports.CreateUser = async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    address,
-    phone,
-    email,
-    password,
-    childName,
-    childAge,
-    childGender,
-  } = req.body;
-  const { childImageFile } = req.file.filename;
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
   try {
+    const {
+      firstName,
+      lastName,
+      address,
+      phone,
+      email,
+      password,
+      childName,
+      childAge,
+      childGender,
+      childImageFile
+    } = req.body;
+
+    if (!firstName || !lastName || !address || !phone || !email || !password || !childName || !childAge || !childGender) {
+      return res.status(400).send({ message: "All fields are required" });
+    }
+
     const userExist = await UserModel.findOne({ email });
     if (userExist) {
-      return res.status(200).send({ message: "Email already exists" });
+      return res.status(400).send({ message: "Email already exists" });
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     await UserModel.create({
       firstName,
       lastName,
       address,
       phone,
       email,
+      password: hashedPassword,
       childName,
       childAge,
       childGender,
-      password: hashedPassword,
+      childImageFile
     });
-    res.status(200).send({ message: "User registered successfully" });
+
+    res.status(201).send({ message: "User registered successfully" });
+
   } catch (error) {
-    console.log("register server error >> ", error);
-    res.status(500).send({ message: error });
+    console.error("Register server error >>", error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
+
 
 module.exports.LoginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -75,9 +83,10 @@ module.exports.LoginUser = async (req, res) => {
 // get profile
 module.exports.GetParentProfile = async (req, res) => {
   try {
-    const { id } = req.body;
-    console.log(id);
+    const { id } = req.params;
+
     const findProfile = await UserModel.findById({ _id: id });
+
     if (findProfile) {
       return res
         .status(200)
