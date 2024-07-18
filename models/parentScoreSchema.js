@@ -15,4 +15,4 @@ const ScoreSchema = new mongoose.Schema(
   }
 );
 
-mongoose.model("ParentScore", ScoreSchema);
+module.exports = mongoose.model("ParentScore", ScoreSchema);

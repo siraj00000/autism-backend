@@ -1,6 +1,4 @@
-const { MongoGridFSChunkError } = require("mongodb");
-const mongoose = require("mongoose");
-const ScoreModel = mongoose.model("ParentScore");
+const ScoreModel = require("../models/parentScoreSchema");
 
 module.exports.PostParentScore = async (req, res) => {
   try {

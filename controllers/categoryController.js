@@ -1,75 +1,58 @@
-const mongoose = require("mongoose");
-const CategoryModel = mongoose.model("Category");
-const express = require("express");
-const multer = require("multer");
-const router = express.Router();
+const CategoryModel = require("../models/categorySchema");
 
-const upload = multer({ dest: "./uploads/" });
-
-// create a category
+// Create a category
 module.exports.CreateCategory = async (req, res) => {
   try {
-    const { title, department } = req.body;
-    const image = req.file ? req.file.filename : null;
+    const { title, department, image } = req.body;
 
     if (!title || !department) {
-      return res
-        .status(400)
-        .send({ message: "Missing required fields: title and department" });
+      return res.status(400).send({ message: "Missing required fields: title and department" });
     }
 
     const newCategory = new CategoryModel({
       title,
       department,
-      image,
+      image: image || null, // Default to null if image is not provided
     });
 
     await newCategory.save();
 
     res.status(201).send({
       message: "Category created successfully",
-      newCategory,
+      category: newCategory,
     });
   } catch (error) {
     console.error("Error creating category:", error);
-    res.status(500).send({ message: "Error creating category" });
+    res.status(500).send({ message: "Error creating category", error });
   }
 };
 
-// show all categories
+// Show all categories
 module.exports.GetAllCategories = async (req, res) => {
   try {
-    const categories = await CategoryModel.find({});
-    const categoryData = categories.map((category) => ({
-      // Include only relevant category properties (e.g., name, description, etc.)
-      id: category._id,
-      name: category.name,
-      // ... other relevant properties
-    }));
-    res
-      .status(200)
-      .send({ message: "Categories fetched!", categories: categories });
+    const categories = await CategoryModel.find();
+   
+    res.status(200).send({ message: "Categories fetched successfully", categories });
   } catch (error) {
     console.error("Error fetching categories:", error);
     res.status(500).send({ message: "Error fetching categories", error });
   }
 };
 
-// get category departments
+// Get category departments
 module.exports.GetCategoryDepartments = async (req, res) => {
   try {
     const { category } = req.params;
-    const category_departments = await CategoryModel.find({
-      category: category,
-    });
-    if (category_departments.length) {
-      return res
-        .status(200)
-        .send({ message: "category departments", data: category_departments });
+    console.log(category);
+    const categoryDepartments = await CategoryModel.findOne({_id: category});
+
+    if (categoryDepartments) {
+      return res.status(200).send({ message: "Category departments fetched successfully", data: categoryDepartments });
     }
-    res.status(200).send({ message: "No departments found." });
+
+    res.status(404).send({ message: "No departments found" });
   } catch (error) {
-    console.error("Error GetCategoryDepartments :", error);
-    res.status(500).send({ message: "Error fetching departments >>", error });
+    console.error("Error fetching category departments:", error);
+    res.status(500).send({ message: "Error fetching departments", error });
   }
 };

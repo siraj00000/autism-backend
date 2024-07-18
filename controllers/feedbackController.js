@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const FeedbackModel = mongoose.model("Feedbacks");
+const FeedbackModel = require("../models/feedbackSchema");
 
 module.exports.CreateFeedback = async (req, res) => {
   try {

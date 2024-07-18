@@ -7,7 +7,7 @@ const {
 const router = express.Router();
 
 router.get("/parents/centers", ShowAllCenters);
-router.get("/parents/high_centers/:isHighCenter", GetHighCenters);
-router.get("/parents/center/address/:address", FindByAddress);
+router.get("/parents/high_centers", GetHighCenters);
+router.get("/parents/center/address", FindByAddress);
 
 module.exports = router;
