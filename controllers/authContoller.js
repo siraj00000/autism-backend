@@ -66,7 +66,7 @@ module.exports.LoginUser = async (req, res) => {
       if (res.status(201)) {
         return res.status(200).send({
           message: "Login Successfull",
-          data: { name: isUser.name, email: isUser.email },
+          data: isUser,
           accessToken,
         });
       } else {
