@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const appRoutes = Router();
 
-appRoutes.get('parents/advices', async (req, res) => {
+appRoutes.get('/parents/advices', async (req, res) => {
 
     const advices = [
         { "advice": "Always be kind to others." },
