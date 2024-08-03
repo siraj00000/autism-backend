@@ -81,6 +81,24 @@ module.exports.LoginUser = async (req, res) => {
 };
 
 // get profile
+module.exports.UpdateProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findProfile = await UserModel.findOneAndUpdate({ _id: id }, req.body, { new: true });
+
+    if (findProfile) {
+      return res
+        .status(200)
+        .send({ message: "Updated Profile", data: findProfile });
+    }
+    res.status(400).send({ message: "Parent Profile Not Found" });
+  } catch (error) {
+    console.log("GetParentProfile error >> ", error);
+    res.status(500).send({ message: "Error Getting profile" });
+  }
+};
+// get profile
 module.exports.GetParentProfile = async (req, res) => {
   try {
     const { id } = req.params;

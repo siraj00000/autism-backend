@@ -18,7 +18,7 @@ appRoutes.get('/parents/advices', async (req, res) => {
     }
 })
 
-appRoutes.get('/parents/centers', async (req, res, next) => {
+appRoutes.get('/parents/centers', async (req, res) => {
     try {
         const centers = await Center.find();
         res.status(200).json({
@@ -31,7 +31,7 @@ appRoutes.get('/parents/centers', async (req, res, next) => {
     }
 })
 
-appRoutes.get('/parents/high_centers', async (req, res, next) => {
+appRoutes.get('/parents/high_centers', async (req, res) => {
     try {
         const highCenters = await HighCenter.find();
         res.status(200).json({
