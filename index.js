@@ -38,6 +38,7 @@ require("./models/parentScoreSchema");
 require("./models/feedbackSchema");
 require("./models/categorySchema");
 require("./models/centerSchema");
+require("./models/advicesSchema");
 
 
 const UserModel = mongoose.model("Users");
