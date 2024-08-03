@@ -17,9 +17,9 @@ module.exports.CreateFeedback = async (req, res) => {
 
     await newFeedback.save();
 
-    res.status(201).send({
+    res.status(200).send({
       message: "Feedback created successfully",
-      feedback: newFeedback,
+      data: newFeedback
     });
   } catch (error) {
     console.error("Error creating feedback:", error);
