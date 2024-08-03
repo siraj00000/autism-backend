@@ -38,6 +38,8 @@ require("./models/parentScoreSchema");
 require("./models/feedbackSchema");
 require("./models/categorySchema");
 require("./models/centerSchema");
+
+
 const UserModel = mongoose.model("Users");
 const CategoryModel = mongoose.model("Category");
 
@@ -47,6 +49,7 @@ app.use(require("./routes/scoreRoutes"));
 app.use(require("./routes/feedbackRoutes"));
 app.use(require("./routes/categoryRoutes"));
 app.use(require("./routes/centerRoutes"));
+app.use(require("./routes/advicesRoutes"));
 
 // register api
 app.post(
