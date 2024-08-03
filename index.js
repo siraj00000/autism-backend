@@ -39,6 +39,7 @@ require("./models/feedbackSchema");
 require("./models/categorySchema");
 require("./models/centerSchema");
 require("./models/advicesSchema");
+require("./models/highCenterSchema");
 
 
 const UserModel = mongoose.model("Users");
